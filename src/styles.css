@@ -1,0 +1,191 @@
+/*
+ * Optional default theme for @etamong-lab/legal.
+ *
+ * Import once in the app: `import "@etamong-lab/legal/styles.css";`
+ * Override the CSS variables to theme (including dark mode) — e.g.
+ *   .dark { --legal-border: #3f3f46; --legal-muted: #a1a1aa; ... }
+ * Or skip this file entirely and style the `legal-*` classes yourself.
+ */
+:root {
+  --legal-fg: #3f3f46;
+  --legal-muted: #71717a;
+  --legal-border: #e4e4e7;
+  --legal-surface: #fafafa;
+  --legal-accent: #2563eb;
+  --legal-mark-bg: #fef08a;
+  --legal-mark-fg: inherit;
+  --legal-notice-bg: #eff6ff;
+  --legal-notice-border: #bfdbfe;
+  --legal-notice-fg: #1e40af;
+  --legal-badge-added-bg: #dcfce7;
+  --legal-badge-added-fg: #15803d;
+  --legal-badge-removed-bg: #fee2e2;
+  --legal-badge-removed-fg: #b91c1c;
+  --legal-badge-changed-bg: #fef3c7;
+  --legal-badge-changed-fg: #b45309;
+}
+
+.legal-document {
+  color: var(--legal-fg);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.legal-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+.legal-section-body > * + * {
+  margin-top: 0.5rem;
+}
+
+.legal-mark {
+  background: var(--legal-mark-bg);
+  color: var(--legal-mark-fg);
+  border-radius: 0.25rem;
+  padding: 0 0.125rem;
+}
+
+/* --- diff table --- */
+.legal-diff {
+  margin-top: 2.5rem;
+}
+.legal-diff-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+.legal-diff-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--legal-border);
+  border-radius: 0.5rem;
+}
+.legal-diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.legal-diff-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--legal-muted);
+  background: var(--legal-surface);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--legal-border);
+}
+.legal-diff-table td {
+  vertical-align: top;
+  color: var(--legal-muted);
+  padding: 0.625rem 0.75rem;
+  border-top: 1px solid var(--legal-border);
+}
+.legal-diff-section span:first-child {
+  color: var(--legal-fg);
+}
+.legal-diff-empty {
+  opacity: 0.5;
+}
+.legal-badge {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0.0625rem 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+.legal-badge--added {
+  background: var(--legal-badge-added-bg);
+  color: var(--legal-badge-added-fg);
+}
+.legal-badge--removed {
+  background: var(--legal-badge-removed-bg);
+  color: var(--legal-badge-removed-fg);
+}
+.legal-badge--changed {
+  background: var(--legal-badge-changed-bg);
+  color: var(--legal-badge-changed-fg);
+}
+
+/* --- version history --- */
+.legal-history {
+  margin-top: 3rem;
+  border-top: 1px solid var(--legal-border);
+  padding-top: 1.5rem;
+}
+.legal-history-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+.legal-history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.legal-history-item {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--legal-accent);
+}
+.legal-history-item.is-selected {
+  color: var(--legal-fg);
+  font-weight: 500;
+  cursor: default;
+}
+
+/* --- per-doc upcoming notice --- */
+.legal-notice {
+  background: var(--legal-notice-bg);
+  border: 1px solid var(--legal-notice-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.legal-notice-text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--legal-notice-fg);
+}
+.legal-notice-preview {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+  color: inherit;
+}
+
+/* --- site-wide policy banner --- */
+.legal-policy-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--legal-notice-bg);
+  border-bottom: 1px solid var(--legal-notice-border);
+  color: var(--legal-notice-fg);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+.legal-policy-notice a {
+  color: inherit;
+  font-weight: 500;
+}
+.legal-policy-notice-dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+}
