@@ -39,10 +39,14 @@ export function PolicyNotice({
     storage ?? (typeof localStorage !== "undefined" ? localStorage : undefined);
 
   const pending = docs
+    // Never surface a banner for an internal/unpublished document.
+    .filter((doc) => doc.visibility === "public")
     .map((doc) => ({ doc, up: upcomingVersion(doc.versions, today) }))
     .filter((x): x is { doc: LegalDocMeta; up: NonNullable<typeof x.up> } => x.up != null);
 
-  const dismissKey = "legal-policy-notice:" + pending.map((x) => `${x.doc.kind}@${x.up.version}`).join(",");
+  const dismissKey =
+    "legal-policy-notice:" +
+    pending.map((x) => `${x.doc.serviceId}:${x.doc.kind}@${x.up.version}`).join(",");
   const [dismissed, setDismissed] = useState(() => store?.getItem(dismissKey) === "1");
 
   if (pending.length === 0 || dismissed) return null;
@@ -52,7 +56,7 @@ export function PolicyNotice({
       <span className="legal-policy-notice-text">
         📢{" "}
         {pending.map((x, i) => (
-          <span key={x.doc.kind}>
+          <span key={`${x.doc.serviceId}:${x.doc.kind}`}>
             {i > 0 ? " · " : ""}
             {renderLink(hrefFor(x.doc), x.doc.title)} {x.up.effectiveDate}부터 변경 예정
           </span>

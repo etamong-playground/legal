@@ -1,8 +1,10 @@
 export type {
+  DataController,
   LegalDocKind,
   LegalDocMeta,
   LegalSection,
   LegalVersion,
+  LegalVisibility,
   VersionChange,
 } from "./model";
 export { todayISO, effectiveVersion, upcomingVersion } from "./helpers";
