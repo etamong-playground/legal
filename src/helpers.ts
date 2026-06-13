@@ -43,3 +43,30 @@ export function upcomingVersion(versions: LegalVersion[], today = todayISO()): L
     .sort((a, b) => a.effectiveDate.localeCompare(b.effectiveDate));
   return announced[0] ?? null;
 }
+
+/**
+ * Date-gate check for `legal-deploy-gate` consumers (see planning concept page
+ * of the same name): "is the policy that takes effect on `effectiveDate`
+ * currently in force?"
+ *
+ * Returns `true` once `now` (KST calendar day) is on or after `effectiveDate`,
+ * so the new-policy code path activates automatically on 시행일 and stays on
+ * forever after. Pure date comparison — no hub fetch, no I/O.
+ *
+ * Typical use:
+ *
+ *   if (policyInForce("2026-07-01")) {
+ *     // new-policy behavior
+ *   } else {
+ *     // old-policy behavior (still required during the notice window)
+ *   }
+ *
+ * `effectiveDate` MUST be the YYYY-MM-DD string from the legal version it
+ * matches. Hardcoding is preferred — published versions are immutable so the
+ * date won't move out from under the gate, and grepping for the literal is
+ * how the branch gets cleaned up after the migration window closes.
+ */
+export function policyInForce(effectiveDate: string, now: string = todayISO()): boolean {
+  // String comparison works because both sides are zero-padded YYYY-MM-DD.
+  return now >= effectiveDate;
+}

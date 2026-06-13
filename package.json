@@ -1,6 +1,6 @@
 {
   "name": "@etamong-lab/legal",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared versioned legal-document model + headless renderers (Terms/Privacy, version diff, advance-notice) for etamong-lab apps.",
   "type": "module",
   "sideEffects": [

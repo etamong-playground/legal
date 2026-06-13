@@ -7,7 +7,7 @@ export type {
   LegalVisibility,
   VersionChange,
 } from "./model";
-export { todayISO, effectiveVersion, upcomingVersion } from "./helpers";
+export { todayISO, effectiveVersion, upcomingVersion, policyInForce } from "./helpers";
 export { renderHighlighted } from "./highlight";
 export { LegalDocument } from "./LegalDocument";
 export { VersionDiff } from "./VersionDiff";
