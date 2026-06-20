@@ -94,3 +94,11 @@ git tag v0.1.0 && git push origin v0.1.0
 ```
 
 CI publishes to GitHub Packages on tags matching `vX.Y.Z`.
+
+## Acknowledgements
+
+Built for [React](https://react.dev) (peer dependency, MIT).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
