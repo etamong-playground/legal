@@ -1,3 +1,5 @@
+> Canonical: https://github.com/etamong-playground/legal | Mirror: https://git.m.etamong.com/etamong-playground/legal (read-only)
+
 # @etamong-lab/legal
 
 Shared, versioned legal-document toolkit for etamong-lab apps — one model,
