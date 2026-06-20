@@ -1,10 +1,12 @@
-> Canonical: https://github.com/etamong-playground/legal | Mirror: https://git.m.etamong.com/etamong-playground/legal (read-only)
+# @etamong-playground/legal
 
-# @etamong-lab/legal
+> **About** — One of several shared libraries behind a personal homelab "fleet" of small apps (error handling · audit logging · encryption-at-rest · i18n · UI · …). Published to show the **design decisions** behind these cross-cutting concerns. It is authored and maintained with [Claude Code](https://www.anthropic.com/claude-code) (Anthropic's agentic CLI), not hand-written.
+>
+> **This is a public repository** — keep internal infrastructure details (hostnames, secret/Vault paths, private URLs, internal issue/MR references) out of code, comments, README, and commit messages.
 
-Shared, versioned legal-document toolkit for etamong-lab apps — one model,
+Shared, versioned legal-document toolkit for etamong-playground apps — one model,
 renderers, and advance-notice logic for Terms (이용약관) / Privacy (개인정보처리방침),
-so each app stops re-implementing its own. Tracked in [planning#158](https://gitlab.com/etamong-lab/planning/-/issues/158).
+so each app stops re-implementing its own.
 
 **Headless & styleless.** Ships a model + helpers + renderers that emit
 `legal-*` class names only. Theme via the optional stylesheet's CSS variables,
@@ -13,22 +15,15 @@ own version data in its own repo (so the legal audit trail stays in git).
 
 ## Install
 
-This package lives in the GitLab npm registry under the `@etamong-lab` scope.
-Add to the consuming app's `.npmrc`:
-
-```
-@etamong-lab:registry=https://gitlab.com/api/v4/projects/82936501/packages/npm/
-```
-
-In CI, authenticate with the job token (the app's pipeline must be allowed to
-read this project — Settings → CI/CD → Job token permissions on `legal`):
-
-```
-//gitlab.com/api/v4/projects/82936501/packages/npm/:_authToken=${CI_JOB_TOKEN}
-```
-
 ```sh
-pnpm add @etamong-lab/legal
+pnpm add @etamong-playground/legal
+```
+
+Resolving `@etamong-playground/*` from GitHub Packages requires the registry in `.npmrc`:
+
+```
+@etamong-playground:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=<your-github-token>
 ```
 
 ## Model
@@ -75,7 +70,7 @@ client boundary (Next.js `"use client"`).
 ## Theming
 
 ```ts
-import "@etamong-lab/legal/styles.css";
+import "@etamong-playground/legal/styles.css";
 ```
 
 Override CSS variables for theme / dark mode:
@@ -98,4 +93,4 @@ Bump `version` in `package.json`, commit, then push a matching tag:
 git tag v0.1.0 && git push origin v0.1.0
 ```
 
-CI publishes to the registry on tags matching `vX.Y.Z`.
+CI publishes to GitHub Packages on tags matching `vX.Y.Z`.
