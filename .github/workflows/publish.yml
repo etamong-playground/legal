@@ -1,0 +1,72 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write   # needed for Vault JWT auth (GitHub Packages) and future npmjs Trusted Publisher
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Ensure npm >= 11.5.1
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check tag matches package.json version
+        if: github.event_name == 'push'
+        run: |
+          PKG_VERSION="v$(node -p "require('./package.json').version")"
+          TAG_VERSION="${GITHUB_REF_NAME}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "Tag $TAG_VERSION does not match package.json version $PKG_VERSION"
+            exit 1
+          fi
+          echo "Version check passed: $TAG_VERSION"
+
+      # ── Publish to npmjs.com ────────────────────────────────────────────
+      # NODE_AUTH_TOKEN is bootstrap-only (NPM_TOKEN secret). Once a
+      # Trusted Publisher is configured on npmjs.com for this repo, remove
+      # the NPM_TOKEN secret and this env block — the OIDC id-token above
+      # will satisfy authentication automatically with provenance enabled.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish to npmjs.com (@etamong-playground/legal)
+        run: npm publish --access public --registry https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # ── Publish to GitHub Packages (mirror) ─────────────────────────────
+      # Built-in GITHUB_TOKEN (permissions: packages: write) — no Vault needed.
+      # ubuntu-latest can't reach internal Vault (10.119) anyway.
+      - name: Publish to GitHub Packages (@etamong-playground/legal)
+        run: |
+          printf '//npm.pkg.github.com/:_authToken=%s\n' "$GITHUB_TOKEN" > .npmrc
+          npm publish --access public --registry https://npm.pkg.github.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
