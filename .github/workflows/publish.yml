@@ -61,25 +61,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # ── Publish to GitHub Packages ──────────────────────────────────────
-      # Vault JWT auth (role: npm-publish on auth/jwt/github) fetches the
-      # GitHub Packages token at runtime — no org/repo secret needed here.
-      - uses: hashicorp/vault-action@v3
-        with:
-          url: https://vault.m.etamong.com
-          method: jwt
-          path: github
-          role: npm-publish
-          jwtGithubAudience: https://vault.m.etamong.com
-          secrets: |
-            homelab/data/apps/forgejo/npm-publish token | GH_PACKAGES_NPM_TOKEN
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          registry-url: 'https://npm.pkg.github.com'
-
+      # ── Publish to GitHub Packages (mirror) ─────────────────────────────
+      # Built-in GITHUB_TOKEN (permissions: packages: write) — no Vault needed.
+      # ubuntu-latest can't reach internal Vault (10.119) anyway.
       - name: Publish to GitHub Packages (@etamong-playground/legal)
-        run: npm publish --registry https://npm.pkg.github.com
+        run: |
+          printf '//npm.pkg.github.com/:_authToken=%s\n' "$GITHUB_TOKEN" > .npmrc
+          npm publish --access public --registry https://npm.pkg.github.com
         env:
-          NODE_AUTH_TOKEN: ${{ env.GH_PACKAGES_NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
