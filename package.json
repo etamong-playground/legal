@@ -1,6 +1,10 @@
 {
   "name": "@etamong-playground/legal",
-  "version": "0.3.1",
+  "version": "0.3.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etamong-playground/legal.git"
+  },
   "description": "Shared versioned legal-document model + headless renderers (Terms/Privacy, version diff, advance-notice) for etamong-lab apps.",
   "type": "module",
   "sideEffects": [
